@@ -6,6 +6,45 @@ class BotHandlers {
     this.userStates = new Map(); // Track user conversation states
   }
 
+  // Start command
+  async handleStartCommand(msg) {
+    const username = msg.from.username || `${msg.from.first_name} ${msg.from.last_name}` || '';
+
+    const welcomeMessage = `
+    👋 Olá, ${username}!
+    
+    🤖 Eu sou o GastosBot e estou aqui pra te ajudar a monitorar e gerenciar suas finanças com facilidade. 💰
+    
+    Aqui você pode:
+
+    💸 Adicionar despesas
+    /add <valor> <descrição> <categoria>
+    Exemplo: /add 25.50 açaí Comida
+    
+    ✏️ Gerenciar despesas adicionadas
+    /list - Mostra suas despesas mais recentes
+    /editlast - Edita sua última despesa
+    /delete <id> - Deleta uma despesa
+
+    📋 Ver gastos por mês
+    Uso: /report mostra todos os seus gastos no mês atual organizados por categoria
+    
+    💡 Dicas
+    • Use categorias consistentes (Comida, transporte, contas...)
+    • Use apenas uma palavra na descrição
+    • Você pode sempre usar /help para visualizar a lista completa de comandos
+
+    Pronto para começar? Adicione seu primeiro gasto! 🚀
+        `;
+
+    try {
+      this.bot.sendMessage(msg.chat.id, welcomeMessage);
+    } catch (error) {
+      console.error('Error in start command:', error);
+      this.bot.sendMessage(msg.chat.id, welcomeMessage);
+    }
+  }
+
   // Add new expense
   async handleAddExpense(msg, match) {
     const chatId = msg.chat.id;
@@ -19,7 +58,7 @@ class BotHandlers {
         user_id: userId,
         amount: parseFloat(amount),
         description: description,
-        category: category,
+        category: category.toLowerCase(),
         telegram_username: msg.from.username || `${msg.from.first_name} ${msg.from.last_name}`
       };
 

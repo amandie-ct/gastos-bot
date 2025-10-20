@@ -28,10 +28,14 @@ bot.onText(/\/list(?: (\d+))?/, (msg, match) => {
   handlers.handleListExpenses(msg, match);
 });
 
-// Delete expense command
 bot.onText(/\/delete (.+)/, (msg, match) => {
   handlers.handleDeleteExpense(msg, match);
 });
+
+// Start command
+bot.onText(/\/start/, (msg) => {
+    handlers.handleStartCommand(msg);
+  });
 
 // Help command
 bot.onText(/\/help/, (msg) => {
@@ -42,7 +46,7 @@ bot.onText(/\/help/, (msg) => {
 /add <valor> <descrição> <categoria>
 Exemplo: /add 25.50 Almoço Comida
 
-📊 View Summary:
+📊 Listar gastos mensais:
 /report - Resumo mensal por categoria
 
 ✏️ Editar despesas:
@@ -72,5 +76,4 @@ bot.on('webhook_error', (error) => {
   console.error('Webhook error:', error);
 });
 
-// Start message
-console.log('🤖 Gastos bot está rodando...');
+console.log('🤖 GastosBot is running...');
