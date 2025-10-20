@@ -1,9 +1,20 @@
 import TelegramBot from 'node-telegram-bot-api';
 import BotHandlers from './src/botHandlers.js';
-
+import express from 'express';
 import { config } from 'dotenv';
 
 config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', bot: 'running' });
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { 
   polling: true 
